@@ -3,6 +3,8 @@ const host = "http://127.0.0.1:8000"; // FastAPI 서버 주소
 const memosContainer = document.querySelector('#messages');
 const memoList = document.querySelector('#message-list');
 
+
+
 // 메모 목록 가져오기
 function getMemos() {
     axios.get(`${host}/api/memos`)
@@ -20,8 +22,9 @@ function renderMemos(memos) {
     memoList.innerHTML = ''; // 초기화
     memos.forEach(memo => {
         const memoLi = document.createElement('li');
-        memoLi.textContent = `${memo.name}: ${memo.message}`;
+        memoLi.innerHTML = `<p>${memo.name}: ${memo.message}</p> <p style = "font-size: 10px;">${memo.time})</p>`;
         
+
         const deleteBtn = document.createElement('button');
         deleteBtn.classList.add('delete-btn');
         deleteBtn.textContent = '삭제';
@@ -50,10 +53,17 @@ document.getElementById('form').addEventListener('submit', function (e) {
     e.preventDefault();
     const name = document.getElementById('name').value;
     const message = document.getElementById('message').value;
-    
+    var today = new Date();
+    var month = ('0' + (today.getMonth() + 1)).slice(-2);
+    var day = ('0' + today.getDate()).slice(-2);
+    var hours = ('0' + today.getHours()).slice(-2); 
+    var minutes = ('0' + today.getMinutes()).slice(-2);
+    const dateString = month  + '/' + day + ' '+ hours +':'+minutes;
+
     axios.post(`${host}/api/memos`, {
         name: name,
-        message: message
+        message: message,
+        time: dateString
     })
     .then(response => {
         getMemos();

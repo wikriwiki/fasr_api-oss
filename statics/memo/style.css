@@ -77,3 +77,8 @@ button:hover {
 #message-list li:last-child {
     border-bottom: none;
 }
+
+.delete-btn {
+    display: flex;
+    margin-left: auto;
+}

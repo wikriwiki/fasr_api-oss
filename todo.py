@@ -12,15 +12,17 @@ class Memo(BaseModel):
     id: int
     name: str
     message: str
-
+    time: str
+    
 class MemoCreate(BaseModel):
     name: str
     message: str
-
+    time: str
+    
 # POST 요청 처리
 @memo_router.post("/api/memos", response_model=Memo)
 async def create_memo(memo: MemoCreate):
-    new_memo = Memo(id=len(memos) + 1, name=memo.name, message=memo.message)
+    new_memo = Memo(id=len(memos) + 1, name=memo.name, message=memo.message, time =memo.time)
     memos.append(new_memo)
     return new_memo
 
