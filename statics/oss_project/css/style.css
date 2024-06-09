@@ -1,0 +1,110 @@
+@charset "utf-8";
+
+*{
+    font-size: 20px;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: black;
+    background-color: white;
+    text-align: center;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.frist {
+    width: 500px;
+    height: 500px;
+    filter: drop-shadow(10px 10px 10px rgb(136, 152, 240));
+    z-index: 3;
+    transition: opacity 1s;
+}
+
+.images {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.window {
+    width: 300px;
+    height: 500px;
+    background-color: white;
+    border-radius: 50px;
+    margin: 0 20px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.6s;
+}
+
+.window img {
+    width: 90%;
+    height: 90%;
+    padding: 20px 10px 10px 10px;
+    object-fit: cover;
+    border-radius: 50px;
+    transition: transform 1s;
+    position: absolute;
+    top: 0;
+    left: 0;
+    backface-visibility: hidden;
+    filter: drop-shadow(10px 10px 6px gray);
+}
+
+.window img.back {
+    transform: rotateY(180deg);
+}
+
+.window.flipped img.front {
+    transform: perspective(700px) rotateY(180deg);
+}
+
+.window.flipped img.back {
+    transform: perspective(700px) rotateY(0deg);
+}
+
+.intro-text {
+    margin: 30px;
+    position: center;
+}
+
+.description {
+    margin-top: 20px;
+    height: 100px;
+    font-size: 16px;
+    color: #333;
+}
+
+body button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: none;
+    background-attachment: fixed;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body button#vi {
+    margin: 10px;
+}
