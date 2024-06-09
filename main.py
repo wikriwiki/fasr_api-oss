@@ -1,4 +1,3 @@
-import os
 from fastapi import FastAPI
 from todo import memo_router
 from fastapi.middleware.cors import CORSMiddleware
@@ -19,7 +18,7 @@ app.add_middleware(
 )
 
 app.mount("/var/www/kwic/fasr_api-oss/statics", StaticFiles(directory="statics"), name="statics")
-base_dir = os.path.dirname(os.path.abspath(__file__))
+
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root():
