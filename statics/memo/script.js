@@ -1,4 +1,4 @@
-const host = "http://127.0.0.1:8000"; // FastAPI 서버 주소
+const host = "http://50.16.250.121:8080"; // FastAPI 서버 주소
 
 const memosContainer = document.querySelector('#messages');
 const memoList = document.querySelector('#message-list');
