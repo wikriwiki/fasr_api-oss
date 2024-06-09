@@ -1,40 +1,71 @@
-const host = "http://127.0.0.1:5501";
+const host = "http://127.0.0.1:8000"; // FastAPI 서버 주소
 
 const memosContainer = document.querySelector('#messages');
-const memoLis = document.querySelector('#message-list');
+const memoList = document.querySelector('#message-list');
 
-
+// 메모 목록 가져오기
 function getMemos() {
-    axios.get(`${host}/memo`)
-        .then(response=>{
+    axios.get(`${host}/api/memos`)
+        .then(response => {
             console.log(response.data);
-            renderMemos(response.data.memos);
+            renderMemos(response.data);
         })
-        .catch(error=>{
+        .catch(error => {
             console.error('Error fetching memos:', error);
         });
-} 
+}
 
+// 메모 렌더링
 function renderMemos(memos) {
-    memosContainer.innerHTML=''; // memosContainer 초기화
-    memos.forEach(memo=>{
-
-        const memoLis = document.createElement('p'); //p추가하고
-        memoLis.textContent = memo.message;
-        memosContainer.appendChild(memoLis);
-
-        // 삭제버튼생성및이벤트처리
+    memoList.innerHTML = ''; // 초기화
+    memos.forEach(memo => {
+        const memoLi = document.createElement('li');
+        memoLi.textContent = `${memo.name}: ${memo.message}`;
+        
         const deleteBtn = document.createElement('button');
         deleteBtn.classList.add('delete-btn');
-        deleteBtn.textContent='x';
+        deleteBtn.textContent = '삭제';
+        deleteBtn.addEventListener('click', () => {
+            deleteMemo(memo.id);
+        });
 
-        // memoLis에삭제버튼추가
-        memoLis.appendChild(deleteBtn);
+        memoLi.appendChild(deleteBtn);
+        memoList.appendChild(memoLi);
     });
 }
 
-window.addEventListener('DOMContentLoaded', function() {
-    getMemos();
+// 메모 삭제
+function deleteMemo(id) {
+    axios.delete(`${host}/api/memos/${id}`)
+        .then(() => {
+            getMemos();
+        })
+        .catch(error => {
+            console.error('Error deleting memo:', error);
+        });
+}
+
+// 메모 생성
+document.getElementById('form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const message = document.getElementById('message').value;
+    
+    axios.post(`${host}/api/memos`, {
+        name: name,
+        message: message
+    })
+    .then(response => {
+        getMemos();
+        document.getElementById('form').reset();
+    })
+    .catch(error => {
+        console.error('Error creating memo:', error);
+    });
 });
 
+// 페이지 로드 시 메모 목록 가져오기
+window.addEventListener('DOMContentLoaded', function () {
+    getMemos();
+});
 

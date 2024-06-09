@@ -29,6 +29,8 @@ async def read_memo_page():
     with open("statics/memo/index.html", encoding="utf-8") as f:
         return HTMLResponse(content=f.read(), status_code=200)
 
+app.include_router(memo_router)
+
 if __name__ == '__main__':
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
 

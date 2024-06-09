@@ -1,39 +1,47 @@
-from fastapi import APIRouter, Query, HTTPException
-from model import Memo
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+from typing import List
+
 memo_router = APIRouter()
 
+# 임시 데이터베이스로 사용할 리스트
 memos = []
-counter = 0
 
-#쿼리로 입력된 메모 받기
-@memo_router.post("/memo")
-async def create_memo(name: str = Query(...), message: str = Query(...)):
-    new_memo = Memo(id=len(memos) + 1, name=name, message=message)
+# Pydantic 모델
+class Memo(BaseModel):
+    id: int
+    name: str
+    message: str
+
+class MemoCreate(BaseModel):
+    name: str
+    message: str
+
+# POST 요청 처리
+@memo_router.post("/api/memos", response_model=Memo)
+async def create_memo(memo: MemoCreate):
+    new_memo = Memo(id=len(memos) + 1, name=memo.name, message=memo.message)
     memos.append(new_memo)
     return new_memo
 
-#메모 요청 처리
-@memo_router.get("/memos")
-async def retrieve_memo() -> dict:
-    return {
-        "memos" : memos
-    }
+# GET 요청 처리 (모든 메모)
+@memo_router.get("/api/memos", response_model=List[Memo])
+async def get_memos():
+    return memos
 
-
-#특정 메모 반환
-@memo_router.get("/memos/{memo_id}")
-async def get_single_memo(memo_id: int) ->dict:
+# GET 요청 처리 (특정 메모)
+@memo_router.get("/api/memos/{memo_id}", response_model=Memo)
+async def get_memo(memo_id: int):
     for memo in memos:
         if memo.id == memo_id:
-            return {"memo" : memo}
-    return {"msg" : "There is no task whith the ID."}
+            return memo
+    raise HTTPException(status_code=404, detail="Memo not found")
 
-
-#메모 삭제
-@memo_router.delete("/memos/{memo_id}")
-async def delete_memo(memo_id: int) ->dict:
+# DELETE 요청 처리
+@memo_router.delete("/api/memos/{memo_id}", response_model=Memo)
+async def delete_memo(memo_id: int):
     for memo in memos:
         if memo.id == memo_id:
             memos.remove(memo)
-            return {"msg": f"memo with ID {memo_id} deleted successfully"}
-    return {"msg": "memo with supplied ID doesn't exist"}
+            return memo
+    raise HTTPException(status_code=404, detail="Memo not found")
