@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from todo import memo_router
 from fastapi.middleware.cors import CORSMiddleware
@@ -17,16 +18,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/statics", StaticFiles(directory="statics"), name="statics")
+app.mount("/var/www/kwic/fasr_api-oss/statics", StaticFiles(directory="statics"), name="statics")
+base_dir = os.path.dirname(os.path.abspath(__file__))
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root():
-    with open("statics/oss_project/index.html", encoding="utf-8") as f:
+    with open("/var/www/kwic/fasr_api-oss/statics/oss_project/index.html", encoding="utf-8") as f:
         return HTMLResponse(content=f.read(), status_code=200)
 
 @app.get("/memo", response_class=HTMLResponse)
 async def read_memo_page():
-    with open("statics/memo/index.html", encoding="utf-8") as f:
+    with open("/var/www/kwic/fasr_api-oss/statics/memo/index.html", encoding="utf-8") as f:
         return HTMLResponse(content=f.read(), status_code=200)
 
 app.include_router(memo_router)
