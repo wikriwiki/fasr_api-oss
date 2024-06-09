@@ -50,5 +50,5 @@ windows.forEach((win, index) => {
 
 
 visitButton.addEventListener("click", function() {
-    window.location.href = "http://:50.16.250.121:8080/memo";
+    window.location.href = "http://50.16.250.121:8080/memo";
 });
