@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>방명록</title>
+    <link rel="stylesheet" href="/var/www/kwic/fasr_api-oss/statics/memo/style.css"> 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> 
+</head>
+<body>
+    <header>
+        <h1>방명록</h1>
+        <p>여기에 당신의 메시지를 남겨주세요.</p>
+    </header>
+    <main>
+        <section id="guestbook-form">
+            <h2>메시지 남기기</h2>
+            <form id="form">
+                <label for="name">이름:</label>
+                <input type="text" id="name" name="name" required>
+                
+                <label for="message">메시지:</label>
+                <textarea id="message" name="message" required></textarea>
+                
+                <button type="submit">제출</button>
+            </form>
+        </section>
+        <section id="messages">
+            <h2>메시지 목록</h2>
+            <ul id="message-list"></ul>
+        </section>
+    </main>
+    <script src="/var/www/kwic/fasr_api-oss/statics/memo/script.js"></script>
+</body>
+</html>
